@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>try
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/trial.css' %}">
+    <script>
+      var user='{{request.user}}'
+      function getToken(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getToken('csrftoken');
+    function getCookie(name)
+    {
+      //split cookie string and getall individual name=value pairs in an array
+      var cookieArr=document.cookie.split(";");
+      //loop through the array elements
+      for(var i=0;i<cookieArr.length[i]; i++)
+      {
+        var cookiePair=cookieArr[i].split("=");
+        /*removing whitesapce at the beginning of the cookie name and compare it with the given string */
+        if(name==cookiePair[0].trim())
+        {
+          //decode  the cookie and return 
+          return decodeURIComponent(cookiePair[1]);
+        }
+
+      }
+      //return null if not found
+      return null;
+
+    }
+
+    var cart=JSON.parse(getCookie('cart'))
+    if(cart==undefined){
+      cart={}
+      console.log('cart was created!')
+      document.cookie='cart='+JSON.stringify(cart) +";domain=;path=/"
+    }
+    console.log('Cart:',cart)
+
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg " style="background-color: powderblue;" >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Ecom</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link " href="/">store</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " aria-current="page" href="/cart">cart</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/checkout">checkout</a>
+              </li>
+              
+              
+            </ul>
+            <form class="d-flex" role="search">
+             
+              <button class="btn btn-outline-success" type="submit">login</button>
+              <a href="/cart">
+
+                <img  id="cart-icon" src="{% static 'images/cart.png' %}">
+              </a>
+             <p id="cart-total">{{cartItems}}</p>
+            </form>
+          </div>
+        </div>
+        
+      </nav>
+      <div class="conatiner">
+        {% block content %}
+
+       {% endblock %}
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+</body>
+</html>
